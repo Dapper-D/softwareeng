@@ -5,7 +5,7 @@ import Link from "next/link";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 interface IFormInput {
-  email: string;
+  emailAddress: string;
   password: string;
 }
 const LoginForm = () => {
@@ -17,17 +17,38 @@ const LoginForm = () => {
     formState: { errors },
     reset,
   } = useForm<IFormInput>({
-    defaultValues: {
-    
-    },
+    defaultValues: {},
   });
 
   /**
    * Function handles user login and submitting login data
    * @param data - User regsiter data
    */
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
+
+    try {
+      try {
+        const response = await fetch("http://localhost:8080/users/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+
+        if (response.ok) {
+          const responseJson = await response.text();
+          // setMessage(`Login successful! Welcome, ${data.username}`);
+          console.log(responseJson);
+        } else {
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <div className="">
@@ -37,11 +58,11 @@ const LoginForm = () => {
           <Input
             className={`transition3  h-14 border-2  border-white bg-transparent text-white rounded-md placeholder:text-gray-200`}
             placeholder="Email address"
-            {...register("email", { required: "Email is required" })}
+            {...register("emailAddress", { required: "Email is required" })}
           />{" "}
-          {errors?.email && (
+          {errors?.emailAddress && (
             <span className="duration-1500 text-xs text-red-500 transition-all ease-out font-bold">
-              {errors?.email.message}
+              {errors?.emailAddress.message}
             </span>
           )}
         </div>

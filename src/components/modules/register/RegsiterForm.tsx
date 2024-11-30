@@ -69,7 +69,7 @@ const RegisterForm = () => {
             </span>
           )}
         </div>
-        <div>
+        {/* <div>
           <Controller
             name="gender"
             control={control}
@@ -93,7 +93,7 @@ const RegisterForm = () => {
           {errors.gender && (
             <p className="mt-2 text-sm text-red-600">{errors.gender.message}</p>
           )}
-        </div>
+        </div> */}
         <div className="">
           <div className="relative">
             <Input
