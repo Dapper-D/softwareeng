@@ -80,7 +80,7 @@ const Profile = () => {
               <UsersIcon />
               <div className="leading-3">
                 <p className=" text-sm font-bold text-slate-700">
-                  Douglas Uni Grads
+                  Douglas College Grads
                 </p>
               </div>
               <p className="text-sm text-slate-500 self-start ml-auto">
