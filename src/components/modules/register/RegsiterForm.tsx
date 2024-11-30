@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
@@ -21,6 +22,7 @@ interface IFormInput {
 }
 const RegisterForm = () => {
   const [passwordtoggle, setPasswordToggle] = useState(true);
+  const router = useRouter();
   const {
     control,
     register,
@@ -37,9 +39,34 @@ const RegisterForm = () => {
    * Function handles user registration and submitting user data
    * @param data - User regsiter data
    */
-  const onSubmit = (data: any) => {
-    const { age, ...newData } = data;
-    console.log(newData);
+  const onSubmit = async (data: any) => {
+    // const { age, ...newData } = data;
+
+    try {
+      const response = await fetch("http://localhost:8080/users/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: data.email,
+          password: data.password,
+          emailAddress: data.email,
+          roles: [{ roleName: "ROLE_ADMIN" }],
+        }),
+      });
+
+      if (response.ok) {
+        const responseJson = await response.text();
+
+        console.log(responseJson);
+
+        router.push("/login");
+      }
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
+    console.log(data);
   };
   return (
     <div className="">
